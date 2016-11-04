@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_gradient_background"
+    tools:context="com.antonioallen.cnnweather.fragments.WeatherDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <!--Date-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDark"
+                android:id="@+id/tv_detail_day"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="20sp"
+                android:text="Tomorrow"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:id="@+id/tv_detail_date"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="15sp"
+                android:text="June 19"/>
+
+        </LinearLayout>
+
+
+        <!--Weather-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="sans-serif-light"
+                    android:text="20°"
+                    android:id="@+id/tv_detail_temp_high"
+                    android:textSize="80sp"
+                    android:textColor="@color/colorDark" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    android:fontFamily="sans-serif"
+                    android:text="13°"
+                    android:id="@+id/tv_detail_temp_low"
+                    android:textSize="40sp"
+                    android:textColor="@android:color/darker_gray" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/art_clear"
+                    android:id="@+id/imgv_detail_weather_image"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:lines="1"
+                    android:id="@+id/tv_detail_weather_main"
+                    android:fontFamily="sans-serif"
+                    android:text="Clear"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/darker_gray" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorDark"
+            android:id="@+id/tv_detail_humidity"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:layout_marginBottom="5dp"
+            android:text="Humidity: 81%"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorDark"
+            android:id="@+id/tv_detail_pressure"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:text="Pressure: 1017 hPa"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorDark"
+            android:id="@+id/tv_detail_wind"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:text="Wind: 2 km/h NW"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

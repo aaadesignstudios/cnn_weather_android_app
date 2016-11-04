@@ -37,34 +37,37 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
+                        <!--Weather Day and Date-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
                             android:fontFamily="sans-serif"
-                            android:text="Today, June 19"
+                            android:text="@string/detail_default_today"
                             android:id="@+id/tv_current_day"
                             android:layout_margin="5dp"
                             android:textSize="20sp"
                             android:textColor="@android:color/white" />
 
+                        <!--Weather Degree Current Temp-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
                             android:fontFamily="sans-serif-light"
-                            android:text="20°"
-                            android:id="@+id/tv_current_day_temp_high"
+                            android:text="@string/detail_default_degree"
+                            android:id="@+id/tv_current_day_temp_current"
                             android:textSize="80sp"
                             android:textColor="@android:color/white" />
 
+                        <!--Weather Degree Day Temp Low-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
                             android:layout_margin="5dp"
                             android:fontFamily="sans-serif"
-                            android:text="13°"
+                            android:text="@string/detail_default_degree"
                             android:id="@+id/tv_current_day_temp_low"
                             android:textSize="30sp"
                             android:textColor="@android:color/white" />
@@ -79,6 +82,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
+                        <!--Weather Current Weather Icon-->
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -87,6 +91,7 @@
                             android:layout_gravity="center_horizontal"
                             />
 
+                        <!--Weather Current Weather Main-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -94,7 +99,7 @@
                             android:lines="1"
                             android:id="@+id/tv_current_weather_main"
                             android:fontFamily="sans-serif"
-                            android:text="Clear"
+                            android:text="@string/detail_default_dash"
                             android:textSize="20sp"
                             android:textColor="@android:color/white" />
 
@@ -105,11 +110,12 @@
 
             </RelativeLayout>
 
-            <!--ListView -->
+            <!--ListView for Data-->
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_gradient_background"
+                android:divider="@android:color/transparent"
                 android:id="@+id/list_view"/>
 
         </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.antonioallen.cnnweather.R;
+import com.antonioallen.cnnweather.abstraction.CNNConstants;
 import com.antonioallen.cnnweather.abstraction.CNNWeather;
 import com.antonioallen.cnnweather.objects.WeatherObject;
 
@@ -74,11 +75,11 @@ public class WeatherListAdapter extends ArrayAdapter<WeatherObject> {
         ImageView imgvWeatherIcon = (ImageView) convertView.findViewById(R.id.imgv_weather_image);
 
         if (weatherObject != null){
-            Date weatherDate = new Date(weatherObject.getTimeStamp() * 1000);
+            Date weatherDate = new Date(weatherObject.getTimeStamp() * CNNConstants.DATE_TIME_CONVERSION);
             SimpleDateFormat format = new SimpleDateFormat("EEEE");
             String stringDay = format.format(weatherDate);
             if (CNNWeather.getInstance().isTomorrow(weatherDate)){
-                stringDay = "Tomorrow";
+                stringDay = context.getString(R.string.text_tomorrow);
             }
             tvWeatherDay.setText(stringDay);
             tvWeatherMain.setText(weatherObject.getWeatherMain());

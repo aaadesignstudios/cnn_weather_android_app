@@ -5,6 +5,9 @@ package com.antonioallen.cnnweather.request;
  */
 
 public class RequestError {
+    /**
+     * Error Returned from GetWeather
+     */
     String message, friendlyMessage;
 
     public RequestError(String errorMessage, String friendlyMessage){

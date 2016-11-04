@@ -7,24 +7,25 @@ package com.antonioallen.cnnweather.abstraction;
 public interface CNNConstants {
 
     String WEATHER_API_KEY = "e053708e57d5b6067cfde34ccd1667e8";
-    String ERROR_UNABLE_TO_GET_WEATHER = "Unable to get weather";
+    String ERROR_UNABLE_TO_GET_WEATHER = "Unable to get weather. Check connection";
     String INTENT_EXTRA_WEATHER_OBJ = "INTENT_WEATHER";
     double MPH_TO_KPH_CONVERSION_RATE = 1.60934;
-    long ONE_MINUTE = 60 * 1000;
-    long ONE_HOUR = 60 * ONE_MINUTE;
-    long ONE_DAY = 24 * ONE_HOUR;
+    int DATE_TIME_CONVERSION = 1000;
+    int DEFAULT_CACHE_SIZE = 1024;
     int CODE_SUCCESS = 200;
+    String WEATHER_DIRECTIONS[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+
 
     class ImageArtworkCodes{
-        final public static String _01 = "01";
-        final public static String _02 = "02";
-        final public static String _03 = "03";
-        final public static String _04 = "04";
-        final public static String _09 = "09";
-        final public static String _10 = "10";
-        final public static String _11 = "11";
-        final public static String _13 = "13";
-        final public static String _50 = "50";
+        final static String _01 = "01";
+        final static String _02 = "02";
+        final static String _03 = "03";
+        final static String _04 = "04";
+        final static String _09 = "09";
+        final static String _10 = "10";
+        final static String _11 = "11";
+        final static String _13 = "13";
+        final static String _50 = "50";
     }
 
     class JsonWeatherResponseKeys{

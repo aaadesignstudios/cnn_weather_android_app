@@ -9,8 +9,11 @@ import com.antonioallen.cnnweather.DetailActivity;
 import com.antonioallen.cnnweather.R;
 import com.antonioallen.cnnweather.objects.WeatherObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,6 +37,22 @@ public class CNNWeather implements CNNWeatherInterface, CNNConstants {
     }
 
     @Override
+    public ArrayList<WeatherObject> filterWeather(ArrayList<WeatherObject> weatherObjects) {
+        /**
+         * Open Weather Api is updated every 3 hours and sometimes returns previous or current days.
+         * Use this method to filter those out.
+         */
+
+        Date currentDate = new Date();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+        int currentDayOfMonth = Integer.valueOf(dayFormat.format(currentDate));
+        while (containInvalidDays(currentDayOfMonth, weatherObjects)){
+            weatherObjects = filteredWeather(currentDayOfMonth, weatherObjects);
+        }
+        return weatherObjects;
+    }
+
+    @Override
     public void navToDetailsActivity(@NonNull Context context, @NonNull WeatherObject weatherObject) {
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra(INTENT_EXTRA_WEATHER_OBJ, weatherObject);
@@ -41,19 +60,21 @@ public class CNNWeather implements CNNWeatherInterface, CNNConstants {
     }
 
     @Override
-    public boolean isTomorrow(Date date) {
-        Date createdDate;
-        Calendar time  = Calendar.getInstance();
-        time.set(Calendar.HOUR_OF_DAY, 0);
-        time.set(Calendar.MINUTE, 0);
-        time.set(Calendar.SECOND, 0);
-        time.set(Calendar.MILLISECOND, 0);
-        createdDate = time.getTime();
+    public boolean isTomorrow(Date weatherDate) {
+        SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+        Date currentDate = new Date();
+        int currentDayOfMonth = Integer.valueOf(dayFormat.format(currentDate));
+        int weatherDateDayOfMonth = Integer.valueOf(dayFormat.format(weatherDate));
+        return weatherDateDayOfMonth - currentDayOfMonth == 1;
+    }
 
-        long timeStampDifference = date.getTime() - createdDate.getTime();
-        long daysDifference = TimeUnit.MILLISECONDS.toDays(timeStampDifference);
-        Log.d(TAG, "Days Difference: "+String.valueOf(daysDifference));
-        return daysDifference < 1;
+    @Override
+    public boolean isToday(Date weatherDate) {
+        SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+        Date currentDate = new Date();
+        int currentDayOfMonth = Integer.valueOf(dayFormat.format(currentDate));
+        int weatherDateDayOfMonth = Integer.valueOf(dayFormat.format(weatherDate));
+        return weatherDateDayOfMonth - currentDayOfMonth == 0;
     }
 
     @Override
@@ -86,4 +107,42 @@ public class CNNWeather implements CNNWeatherInterface, CNNConstants {
                 return R.drawable.ic_error_transparent;
         }
     }
+
+    @Override
+    public String getWindDirection(double degree) {
+        return WEATHER_DIRECTIONS[ (int)Math.round((((double)degree % 360) / 45)) % 8 ];
+    }
+
+    private ArrayList<WeatherObject> filteredWeather(int currentDayOfMonth, ArrayList <WeatherObject> weatherObjects){
+        SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+        for (int i = 0; i < weatherObjects.size(); i++){
+            WeatherObject weatherObject = weatherObjects.get(i);
+            Date weatherDate = new Date(weatherObject.getTimeStamp() * DATE_TIME_CONVERSION);
+            int weatherDateDayOfMonth = Integer.valueOf(dayFormat.format(weatherDate));
+            if (weatherDateDayOfMonth < currentDayOfMonth){
+                Log.d(TAG, "Day is less than current day. Remove.");
+                weatherObjects.remove(i);
+                break;
+            }else if (weatherDateDayOfMonth == currentDayOfMonth){
+                Log.d(TAG, "Day is same as current day. Remove.");
+                weatherObjects.remove(i);
+                break;
+            }
+        }
+        return weatherObjects;
+    }
+
+    private boolean containInvalidDays(int currentDayOfMonth, ArrayList <WeatherObject> weatherObjects){
+        SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+        for (int i = 0; i < weatherObjects.size(); i++){
+            WeatherObject weatherObject = weatherObjects.get(i);
+            Date weatherDate = new Date(weatherObject.getTimeStamp() * DATE_TIME_CONVERSION);
+            int weatherDateDayOfMonth = Integer.valueOf(dayFormat.format(weatherDate));
+            if (weatherDateDayOfMonth <= currentDayOfMonth){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

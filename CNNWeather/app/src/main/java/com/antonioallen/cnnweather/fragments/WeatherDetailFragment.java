@@ -4,6 +4,7 @@ package com.antonioallen.cnnweather.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.R.attr.format;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -31,7 +30,6 @@ public class WeatherDetailFragment extends Fragment {
     private SimpleDateFormat formatE;
     private SimpleDateFormat formatMD;
     NumberFormat decimalFormat;
-
 
     //Init Views
     TextView tvDay, tvDate, tvWeatherTempMin, tvWeatherTempMax,
@@ -55,15 +53,15 @@ public class WeatherDetailFragment extends Fragment {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
+        //Set Weather Object
         weatherObject = args.getParcelable(ARGS_WEATHER_OBJ);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Set Vars
-        decimalFormat = new DecimalFormat("#0.00");
+        decimalFormat = new DecimalFormat(getString(R.string.decimal_format));
     }
 
     @Override
@@ -88,21 +86,21 @@ public class WeatherDetailFragment extends Fragment {
         tvWeatherWind = (TextView) view.findViewById(R.id.tv_detail_wind);
         imgvWeatherIcon = (ImageView) view.findViewById(R.id.imgv_detail_weather_image);
 
-
-
         //Set Content
         if (weatherObject == null)
             return;
-        Date weatherDate = new Date(weatherObject.getTimeStamp() * 1000);
+        Date weatherDate = new Date(weatherObject.getTimeStamp() * CNNConstants.DATE_TIME_CONVERSION);
         formatE = new SimpleDateFormat("EEEE");
         formatMD = new SimpleDateFormat("MMMM d");
         String stringDay = formatE.format(weatherDate);
-        if (CNNWeather.getInstance().isTomorrow(weatherDate)){
-            stringDay = "Tomorrow";
-        }
-        double kilometersPerHour = (weatherObject.getWindSpeed() * CNNConstants.MPH_TO_KPH_CONVERSION_RATE);
 
-        //TODO GET DIRECTION FROM DEGREES
+        if (CNNWeather.getInstance().isTomorrow(weatherDate)){
+            stringDay = getString(R.string.text_tomorrow);
+        }else if (CNNWeather.getInstance().isToday(weatherDate)){
+            stringDay = getString(R.string.text_today);
+        }
+
+        double kilometersPerHour = (weatherObject.getWindSpeed() * CNNConstants.MPH_TO_KPH_CONVERSION_RATE);
 
         tvDay.setText(stringDay);
         tvDate.setText(formatMD.format(weatherDate));
@@ -119,14 +117,11 @@ public class WeatherDetailFragment extends Fragment {
                 getString(R.string.pressure_symbol)));
         tvWeatherWind.setText(String.valueOf(getString(R.string.text_wind_prefix) +
                 decimalFormat.format(kilometersPerHour) +
-                getString(R.string.wind_symbol) + " "+
+                getString(R.string.wind_symbol) + " "+ CNNWeather.getInstance().
                 getWindDirection(weatherObject.getWindDirectionDegrees())));
+        imgvWeatherIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                CNNWeather.getInstance().getImageDrawableResourceId(weatherObject.getWeatherIcon(),
+                        false)));
 
     }
-
-    private String getWindDirection(double degree){
-        String directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
-        return directions[ (int)Math.round((  ((double)degree % 360) / 45)) % 8 ];
-    }
-
 }

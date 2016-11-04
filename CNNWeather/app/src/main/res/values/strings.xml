@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">CNNWeather</string>
-
+    <string name="app_name_space">CNN Weather</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="degree_symbol">°</string>
@@ -10,4 +10,16 @@
     <string name="pressure_symbol">hPa</string>
     <string name="text_wind_prefix">"Wind: "</string>
     <string name="wind_symbol">" km/h"</string>
+    <string name="text_today">Today</string>
+    <string name="text_tomorrow">Tomorrow</string>
+    <string name="decimal_format">#0.00</string>
+    <string name="default_city">Atlanta</string>
+    <string name="default_state">GA</string>
+    <string name="text_today_prefix">"Today, "</string>
+    <string name="detail_default_dash">--</string>
+    <string name="detail_default_degree">--°</string>
+    <string name="detail_default_humidity">Humidity: --%</string>
+    <string name="detail_default_pressure">Pressure: -- hPa</string>
+    <string name="detail_default_wind_speed">Wind: -- km/h NW</string>
+    <string name="detail_default_today">Today, --</string>
 </resources>

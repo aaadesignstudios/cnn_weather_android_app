@@ -5,6 +5,9 @@ package com.antonioallen.cnnweather.objects;
  */
 
 public class CityObject {
+    /**
+     * City Data returned from GetWeather
+     */
     int id;
     String name, country;
     double longitude, latitude;

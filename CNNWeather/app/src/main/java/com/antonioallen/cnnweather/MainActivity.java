@@ -25,6 +25,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set Action Bar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.app_name_space));
+        }
+
+
     }
 
 }

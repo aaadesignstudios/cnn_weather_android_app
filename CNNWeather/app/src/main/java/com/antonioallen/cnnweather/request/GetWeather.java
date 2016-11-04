@@ -2,6 +2,7 @@ package com.antonioallen.cnnweather.request;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,11 +30,23 @@ public class GetWeather implements CNNConstants{
     private static String THREAD_NAME  = GetWeather.class.getSimpleName()+"_THREAD";
     private static ThreadGroup threadGroup = new ThreadGroup(THREAD_NAME);
 
+    /**
+     * Get Weather Data in Simple Fashion
+     * @param requestBuilder
+     * @param listener
+     * @param context
+     * @param asynchronous
+     * @return
+     */
+
     public static Runnable getWeather(@NonNull final RequestBuilder requestBuilder,
                                       @NonNull final OnWeatherListener listener, @NonNull final Context context, boolean asynchronous){
         //Check to make sure URL is Valid
         if (requestBuilder.getForecastUrl() == null || requestBuilder.getCurrentUrl() == null)
             return null;
+
+        Log.d(TAG, "Forecast Weather Url: "+String.valueOf(requestBuilder.getForecastUrl()));
+        Log.d(TAG, "Current Weather Url: "+String.valueOf(requestBuilder.getCurrentUrl()));
 
         final Runnable r = new Runnable() {
             @Override
@@ -44,7 +57,7 @@ public class GetWeather implements CNNConstants{
                     public void onResponse(JSONObject response) {
                         //Get Data
                         if (response != null){
-
+                            Log.d(TAG, "Forecast Response: "+response.toString());
                             if (response.has(JsonWeatherResponseKeys.JSON_INT_CODE)){
                                 try {
                                     int code = response.getInt(JsonWeatherResponseKeys.JSON_INT_CODE);
@@ -150,7 +163,8 @@ public class GetWeather implements CNNConstants{
                                                     continue;
                                                 }
 
-                                                JSONObject weatherDetailsObj = weatherArray.getJSONObject(0); // Get the first object in array
+                                                // Get the first object in array
+                                                JSONObject weatherDetailsObj = weatherArray.getJSONObject(0);
 
                                                 if (weatherDetailsObj == null){
                                                     continue;
@@ -237,7 +251,7 @@ public class GetWeather implements CNNConstants{
                     public void onResponse(JSONObject response) {
                         //Get Data
                         if (response != null){
-
+                            Log.d(TAG, "Current Response: "+response.toString());
                             if (response.has(JsonWeatherResponseKeys.JSON_INT_CODE)){
                                 try {
                                     int code = response.getInt(JsonWeatherResponseKeys.JSON_INT_CODE);
@@ -246,7 +260,7 @@ public class GetWeather implements CNNConstants{
                                                 + String.valueOf(code), ERROR_UNABLE_TO_GET_WEATHER));
                                         return;
                                     }
-                                    //Initialize Retur Objects
+                                    //Initialize Return Objects
                                     WeatherObject weatherObject = null;
                                     CityObject cityObject = null;
 
@@ -308,7 +322,8 @@ public class GetWeather implements CNNConstants{
                                         return;
                                     }
 
-                                    JSONObject weatherDetailsObj = weatherArray.getJSONObject(0); // Get the first object in array
+                                    // Get the first object in array
+                                    JSONObject weatherDetailsObj = weatherArray.getJSONObject(0);
 
                                     if (weatherDetailsObj == null){
                                         return;
@@ -387,6 +402,9 @@ public class GetWeather implements CNNConstants{
                         listener.onError(new RequestError(error.getMessage(), ERROR_UNABLE_TO_GET_WEATHER));
                     }
                 });
+
+                requestCurrent.setShouldCache(false);
+                requestForecast.setShouldCache(false);
 
                 WeatherRequestQueue.getInstance(context).getQueue().add(requestCurrent);
                 WeatherRequestQueue.getInstance(context).getQueue().add(requestForecast);

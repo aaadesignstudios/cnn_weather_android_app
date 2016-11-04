@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.antonioallen.cnnweather.MainActivity;
 import com.antonioallen.cnnweather.R;
 import com.antonioallen.cnnweather.abstraction.CNNConstants;
 import com.antonioallen.cnnweather.abstraction.CNNWeather;
@@ -36,13 +35,13 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
         OnWeatherListener, AdapterView.OnItemClickListener, View.OnClickListener{
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
     //Init Views
-    private TextView tvCurrentDay, tvCurrentTempMax,
+    private TextView tvCurrentDay, tvCurrentTemp,
             tvCurrentTempMin, tvCurrentWeatherMain;
     private ImageView imgvCurrentWeatherImage;
     private ListView listView;
@@ -72,7 +71,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //Set Views
         tvCurrentDay = (TextView) view.findViewById(R.id.tv_current_day);
-        tvCurrentTempMax = (TextView) view.findViewById(R.id.tv_current_day_temp_high);
+        tvCurrentTemp = (TextView) view.findViewById(R.id.tv_current_day_temp_current);
         tvCurrentTempMin = (TextView) view.findViewById(R.id.tv_current_day_temp_low);
         tvCurrentWeatherMain = (TextView) view.findViewById(R.id.tv_current_weather_main);
         imgvCurrentWeatherImage = (ImageView) view.findViewById(R.id.imgv_weather_image_current_day);
@@ -89,6 +88,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rootLayout.setOnClickListener(this);
         listView.setOnItemClickListener(this);
 
+        //Get Weather
         getWeather();
     }
 
@@ -97,8 +97,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             return;
         RequestBuilder requestBuilder = new RequestBuilder()
                 .setApiKey(CNNConstants.WEATHER_API_KEY)
-                .setCity("Atlanta")
-                .setState("GA");
+                .setCity(getString(R.string.default_city))
+                .setState(getString(R.string.default_state));
         Runnable r = GetWeather.getWeather(requestBuilder, this, getActivity().getApplicationContext(), true);
         if (r != null){
             r.run();
@@ -109,15 +109,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void setViews(WeatherObject weatherObject){
         if (tvCurrentDay == null || tvCurrentWeatherMain == null || tvCurrentTempMin == null ||
-                tvCurrentTempMax == null || imgvCurrentWeatherImage == null)
+                tvCurrentTemp == null || imgvCurrentWeatherImage == null)
             return;
+
         Log.d(TAG, "Setting Views");
         Date date = new Date(weatherObject.getTimeStamp() * 1000);
         SimpleDateFormat format = new SimpleDateFormat("MMMM d");
-        String currentDate = "Today, " + format.format(date);
+        String currentDate = getString(R.string.text_today_prefix) + format.format(date);
         tvCurrentWeatherMain.setText(weatherObject.getWeatherMain());
         tvCurrentTempMin.setText(String.valueOf((int) weatherObject.getLowTemperature() + getString(R.string.degree_symbol)));
-        tvCurrentTempMax.setText(String.valueOf((int) weatherObject.getHighTemperature() + getString(R.string.degree_symbol)));
+        tvCurrentTemp.setText(String.valueOf((int) weatherObject.getCurrentTemperature() + getString(R.string.degree_symbol)));
         tvCurrentDay.setText(currentDate);
         imgvCurrentWeatherImage.setImageDrawable(ContextCompat.getDrawable(getContext(),
                 CNNWeather.getInstance().getImageDrawableResourceId(weatherObject.getWeatherIcon(), false)));
@@ -147,6 +148,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onCurrentWeather(WeatherObject currentWeather, CityObject cityObject) {
+        //Received Current Weather
         this.currentWeather = currentWeather;
         setViews(currentWeather);
         hideRefresh();
@@ -154,16 +156,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onForecast(ArrayList<WeatherObject> weatherObjects, CityObject cityObject, int dayCount) {
+        //Received Forecast
         if (mAdapter == null || getActivity() == null)
             return;
-        Log.d(TAG, "Got Weather");
+        Log.d(TAG, "Weather Forecast Returned");
         mAdapter.clear();
-        mAdapter.addAll(weatherObjects);
+        mAdapter.addAll(CNNWeather.getInstance().filterWeather(weatherObjects));
         hideRefresh();
     }
 
     @Override
     public void onError(RequestError error) {
+        //Request Erro
         Log.d(TAG, "Request Error: "+String.valueOf(error.getMessage()));
         Toast.makeText(getContext(), error.getFriendlyMessage(), Toast.LENGTH_SHORT).show();
         hideRefresh();
@@ -181,8 +185,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.linl_root_layout:
-
+                //On Header Clicked
+                if (currentWeather != null){
+                    CNNWeather.getInstance().navToDetailsActivity(getContext(), currentWeather);
+                }
                 break;
         }
     }
+
 }

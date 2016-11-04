@@ -8,6 +8,10 @@ import android.os.Parcelable;
  */
 
 public class WeatherObject implements Parcelable {
+    /**
+     * Weather Data returned from GetWeather. Parcelable to allow flexibility
+     */
+
     //Time of data forecasted
     private long timeStamp;
     //Temperature Values

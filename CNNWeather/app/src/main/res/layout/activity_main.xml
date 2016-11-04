@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.antonioallen.cnnweather.MainActivity">
 
+    <!--Inline Fragment. This is the main view and should not be replaced -->
+
     <fragment
         android:name="com.antonioallen.cnnweather.fragments.MainFragment"
         android:id="@+id/fooFragment"

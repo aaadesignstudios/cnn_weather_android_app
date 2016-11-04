@@ -13,8 +13,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="ce"
+            android:layout_gravity="center_vertical"
             android:layout_weight="2">
+
+            <!--Weather Icon -->
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -32,6 +34,7 @@
             android:orientation="vertical"
             android:layout_weight="1">
 
+            <!-- Weather Day -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,8 +42,9 @@
                 android:id="@+id/tv_day"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="20sp"
-                android:text="Tomorrow"/>
+                android:text="@string/detail_default_dash"/>
 
+            <!--Weather Main -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +52,7 @@
                 android:id="@+id/tv_weather_main"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="15sp"
-                android:text="Rain"/>
+                android:text="@string/detail_default_dash"/>
 
         </LinearLayout>
 
@@ -64,6 +68,8 @@
                 android:layout_centerInParent="true"
                 android:layout_weight="1">
 
+                <!--Weather Degree Max-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +78,9 @@
                     android:fontFamily="sans-serif-medium"
                     android:id="@+id/tv_temp_max"
                     android:textSize="20sp"
-                    android:text="14°"/>
+                    android:text="@string/detail_default_degree"/>
+
+                <!--Weather Degree Min-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,7 +90,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:id="@+id/tv_temp_min"
                     android:textSize="15sp"
-                    android:text="13°"/>
+                    android:text="@string/detail_default_degree"/>
 
             </LinearLayout>
 

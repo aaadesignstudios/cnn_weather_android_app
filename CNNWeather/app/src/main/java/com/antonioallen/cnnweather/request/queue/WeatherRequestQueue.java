@@ -8,19 +8,24 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.antonioallen.cnnweather.abstraction.CNNConstants;
 
 /**
  * Created by antonioallen on 11/3/16.
  */
 
 public class WeatherRequestQueue {
+    /**
+     * Request Queue Manager
+     */
     private static WeatherRequestQueue instance;
     private RequestQueue requestQueue;
     private Network network;
     private boolean started;
     public WeatherRequestQueue(Context context){
         network = new BasicNetwork(new HurlStack());
-        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+        Cache cache = new DiskBasedCache(context.getCacheDir(), CNNConstants.DEFAULT_CACHE_SIZE *
+                CNNConstants.DEFAULT_CACHE_SIZE);
         requestQueue = new RequestQueue(cache, network);
     }
 

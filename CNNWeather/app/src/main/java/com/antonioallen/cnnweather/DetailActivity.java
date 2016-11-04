@@ -19,8 +19,9 @@ public class DetailActivity extends AppCompatActivity {
     private static final String TAG = DetailActivity.class.getSimpleName();
     WeatherObject weatherObject;
     WeatherDetailFragment weatherDetailFragment;
-    private SimpleDateFormat formatE;
+    private SimpleDateFormat formatDayOfWeek;
     private FragmentTransaction ft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +32,12 @@ public class DetailActivity extends AppCompatActivity {
             finish();
 
         Date weatherDate = new Date(weatherObject.getTimeStamp() * 1000);
-        formatE = new SimpleDateFormat("EEEE");
-        String stringDay = formatE.format(weatherDate);
+        formatDayOfWeek = new SimpleDateFormat("EEEE");
+        String stringDay = formatDayOfWeek.format(weatherDate);
         if (CNNWeather.getInstance().isTomorrow(weatherDate)){
-            stringDay = "Tomorrow";
+            stringDay = getString(R.string.text_tomorrow);
+        }else if (CNNWeather.getInstance().isToday(weatherDate)){
+            stringDay = getString(R.string.text_today);
         }
 
         //Set Action Bar

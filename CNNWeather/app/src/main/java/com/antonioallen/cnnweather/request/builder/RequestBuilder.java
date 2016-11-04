@@ -7,6 +7,10 @@ import android.util.Log;
  */
 
 public class RequestBuilder {
+    /**
+     * Request Builder to Create URL
+     */
+
     public static String TAG = RequestBuilder.class.getSimpleName();
     String city, state;
     String apiKey;
